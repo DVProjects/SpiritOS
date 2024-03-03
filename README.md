@@ -1,0 +1,2 @@
+# SpiritOS
+A simple OS
