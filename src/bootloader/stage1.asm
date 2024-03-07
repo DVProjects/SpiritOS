@@ -39,7 +39,6 @@ main16:
 BOOT_STRING:db "Booting...",0xD,0xA,0
 
 BOOT_DISK:db 0
-STAGE2_LOC:db 0
 
 times 510-($-$$) db 0
 dw 0xaa55
