@@ -6,8 +6,11 @@ run: build
 	qemu-system-i386 "SpiritOS.bin"
 
 build:
-	nasm -I $(ASM_LIBS) "src/bootloader/boot.asm" -f bin -o "built/boot_module.bin"
+	nasm -I $(ASM_LIBS) "src/bootloader/stage1.asm" -f bin -o "built/boot_module.bin"
 	cat built/*.bin > "SpiritOS.bin"
+
+dump:
+	hexdump "SpiritOS.bin"
 
 clean:
 	rm built/*.bin
