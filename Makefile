@@ -3,7 +3,7 @@ ASM_LIBS:=src/include/asm/
 all: run
 
 run: build
-	qemu-system-i386 "SpiritOS.bin"
+	qemu-system-i386 -m 16M "SpiritOS.bin"
 
 build:
 	nasm -I $(ASM_LIBS) "src/bootloader/stage1.asm" -f bin -o "built/boot_module.bin"

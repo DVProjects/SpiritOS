@@ -32,9 +32,11 @@ main16:
 	mov ah, 0x02
 	mov dl, [BOOT_DISK]
 	int 0x13
-	jc main16
+	jc .end
 	jmp stage2
-	hlt
+	
+	.end:
+		hlt
 
 BOOT_STRING:db "Booting...",0xD,0xA,0
 
