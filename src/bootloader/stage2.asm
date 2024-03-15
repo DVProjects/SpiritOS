@@ -31,6 +31,13 @@ checkA20:
 	cmp ax, 0x1
 	je .end
 	
+	in al, 0x92		;try using fast method
+	or al, 2
+	out 0x92, al
+	call testA20
+	cmp ax, 0x1
+	je .end
+
 	mov si, A20_DISABLED
 	.end:
 		ret
