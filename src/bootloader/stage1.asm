@@ -24,7 +24,7 @@ main16:
 
 	;load stage 2
 	mov bx, 0x7e00
-	mov al, 0x02		;n sectors
+	mov al, 0x10		;n sectors
 	mov ch, 0x00		;cylinder 0
 	mov cl, 0x02		;sector 1      +1=2
 	mov dh, 0x00		;head 0
