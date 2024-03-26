@@ -12,13 +12,23 @@ stage2:
 	test ax, ax		;check if a20 wasnt enabled
 	je .end
 
+	call memCount		;detect usable memory
+	call BIOSprintS
+	jc .end
+	imul edx, ebx, 64
+	add eax, edx
+	add eax, 0x400		;add 1 undetected MB
+	mov [MEM_SIZE], eax
+	
 	BIOScls
 
-	lgdt [GDTdescriptor]
+	call gdtInit
+
 	mov eax, cr0
 	or eax, 1
 	mov cr0, eax
 	jmp CODE_SEG:main32
+
 	.end:
 		hlt
 
@@ -44,6 +54,38 @@ checkA20:
 	.end:
 		ret
 
+memCount:;	returns mem size (in 64 KB blocks) in ax
+	xor cx, cx
+	xor dx, dx
+	mov ax, 0xe801
+	int 0x15
+	jc .err
+	mov si, MEM_DETECTED
+	jcxz .end	;jump if interrupt returned cx=0
+	mov ax, cx
+	mov bx, dx
+	jmp .end
+	
+	.err:
+		mov si, MEM_ERROR
+
+	.end:
+		ret
+
+gdtInit:	
+	xor edx, edx
+	mov eax,[MEM_SIZE]
+	xor edx, edx
+	mov ebx, 0x4
+	div ebx				;divide in 4 KB blocks
+	mov [GDT.code_limit_low], ax
+	mov [GDT.data_limit_low], ax
+	shrd eax, eax, 0x10		;mov higher part of eax to ax
+	or [GDT.code_limit_high], al
+	or [GDT.data_limit_high], al
+	lgdt [GDTdescriptor]
+	ret
+
 [bits 32]
 main32:
 	mov ax, DATA_SEG
@@ -57,9 +99,12 @@ main32:
 	mov esp, ebp
 	jmp KERNEL_LOC
 
+BOOT_STAGE2:	db "Loaded 2nd stage...",0xD,0xA,0
+A20_ACTIVE:	db "A20 line activated...",0xD,0xA,0
+A20_DISABLED:	db "A20 line is not activated...",0xD,0xA,0
+MEM_DETECTED:	db "All memory counted!",0xD,0xA,0
+MEM_ERROR:	db "Error detecting memory!",0xD,0xA,0
 
-BOOT_STAGE2:db "Loaded 2nd stage...",0xD,0xA,0
-A20_ACTIVE:db "A20 line activated...",0xD,0xA,0
-A20_DISABLED:db "A20 line is not activated...",0xD,0xA,0
+MEM_SIZE:	dd 0
 
 times 1024-($-$$) db 0; fill rest of 2nd sector with 0s
