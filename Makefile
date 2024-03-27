@@ -1,5 +1,7 @@
 ASM_LIBS:=src/include/asm/
+KERNEL_LIBS:=src/include/kernel/
 I386:=/usr/local/i686elfgcc/bin/i686-elf-
+GCC_FLAGS:=-ffreestanding -m32 -g -c 
 
 all: run
 
@@ -12,8 +14,8 @@ build:
 	nasm "src/kernel/empty.asm" -f bin -o "built/empty.bin"
 	
 	nasm "src/kernel/kernelEntry.asm" -f elf -o "built/kernelEntry.o"
-	$(I386)gcc -ffreestanding -m32 -g -c "src/kernel/kernel.c" -o "built/kernel.o"
-	$(I386)ld -o "built/kernel_module.bin" -Ttext 0x8000 "built/kernelEntry.o" "built/kernel.o" --oformat binary
+	$(I386)gcc -I $(KERNEL_LIBS) $(GCC_FLAGS) "src/kernel/kernel.c" -o "built/kernel.o"
+	$(I386)ld -o "built/kernel_module.bin" -Ttext 0x8000  "built/kernelEntry.o" "built/kernel.o" --oformat binary
 	
 	cat "built/boot_module.bin" "built/kernel_module.bin" > "built/short.bin"
 	cat "built/short.bin" "built/empty.bin" > "SpiritOS.bin"
