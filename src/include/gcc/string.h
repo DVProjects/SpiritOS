@@ -1,7 +1,7 @@
 #ifndef _STRING_H
 #define _STRING_H 1
  
-#include <../cdefs.h>
+#include "../cdefs.h"
 #include <stddef.h>
  
 #ifdef __cplusplus
