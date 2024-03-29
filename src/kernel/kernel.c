@@ -8,4 +8,5 @@ void kernel(void){
 	for (int i = 0;i<strlen(str);i++){
 		*(uint16_t*)(0xb8000+i*2) = vga_entry(str[i],color);
 	}
+	memcpy((void*)0xb8800,(void*)0xb8000,strlen(str)*2);
 }

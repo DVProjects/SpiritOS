@@ -1,0 +1,7 @@
+#include "string.h"
+#include "string/strlen.c"
+#include "string/strncmp.c"
+#include "string/strcmp.c"
+#include "string/memcmp.c"
+#include "string/memcpy.c"
+#include "string/memset.c"
