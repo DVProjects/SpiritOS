@@ -6,7 +6,5 @@
 
 void kernel(void){
 	terminal_init();
-	terminal_writestring("Hello world!");
-	terminal_setcolor(vga_entry_color(VGA_RED,VGA_GREEN));
-	terminal_writestring("Nice colors!");
+	terminal_writestring("Hello world\nPretty good!");
 }
