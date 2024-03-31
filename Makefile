@@ -22,7 +22,7 @@ built/empty.bin: src/empty.asm
 built/boot.module: src/bootloader/*.asm $(ASM_HDIR)*.inc
 	nasm -I $(ASM_HDIR) "src/bootloader/stage1.asm" -f bin -o $@
 
-built/kernel.module: built/kernel_entry.o built/kernel.o built/libs.o
+built/kernel.module: built/kernel_entry.o built/kernel.o  $(KERNEL_OBJS) $(GCC_OBJS)
 	$(I686)ld -o $@ -Ttext 0x8000 $^ --oformat binary
 
 built/kernel.o: src/kernel/kernel.c
@@ -31,11 +31,9 @@ built/kernel.o: src/kernel/kernel.c
 built/kernel_entry.o: src/kernel/kernel_entry.asm
 	nasm $< -f elf -o $@
 
-built/libs.o: $(KERNEL_OBJS) $(GCC_OBJS)
-	$(I686)ld $^ -o $@
 
 $(KERNEL_OBJS): $(KERNEL_HDIR)$(KERNEL_LIBS).c $(KERNEL_HDIR)$(KERNEL_LIBS).h
-	$(I686)gcc $(GCC_FLAGS) $< -o $@
+	$(I686)gcc -I $(GCC_HDIR) $(GCC_FLAGS) $< -o $@
 
 $(GCC_OBJS):$(GCC_HDIR)$(GCC_LIBS).c $(GCC_HDIR)$(GCC_LIBS).h $(GCC_HDIR)$(GCC_LIBS)/*.c 
 	$(I686)gcc $(GCC_FLAGS) $< -o $@
