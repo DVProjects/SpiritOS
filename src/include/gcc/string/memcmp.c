@@ -1,3 +1,4 @@
+#include <stddef.h>
 int memcmp(const void* aptr, const void* bptr, size_t size) {
 	const unsigned char* a = (const unsigned char*) aptr;
 	const unsigned char* b = (const unsigned char*) bptr;
