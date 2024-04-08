@@ -5,5 +5,6 @@
 
 void kernel(void){
 	terminal_init();
-	terminal_writestring("Hello world");
+	terminal_writestring("Hello world\n");
+	terminal_writestring("Line 2\n");
 }
