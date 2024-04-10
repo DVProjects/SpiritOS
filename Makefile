@@ -21,7 +21,6 @@ built/boot.module: src/bootloader/*.asm $(ASM_IDIR)*.inc
 	nasm -I $(ASM_IDIR) "src/bootloader/stage1.asm" -f bin -o $@
 
 built/kernel.module: built/kernel_entry.o built/kernel.o $(KERNEL_OBJS) $(GCC_OBJS)
-	echo $(KERNEL_OBJS)
 	$(I686)ld -o $@ -Ttext 0x8000 $^ --oformat binary
 
 built/kernel.o: src/kernel/kernel.c
