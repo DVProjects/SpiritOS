@@ -32,6 +32,9 @@ built/kernel_entry.o: src/kernel/kernel_entry.asm
 built/%.string.o: $(GCC_HDIR)string/%.c $(GCC_HDIR)string.h
 	$(I686)gcc -I $(GCC_HDIR) $(GCC_FLAGS) $< -o $@
 
+built/%.stdlib.o: $(GCC_HDIR)stdlib/%.c $(GCC_HDIR)stdlib.h
+	$(I686)gcc -I $(GCC_HDIR) -I $(KERNEL_HDIR) $(GCC_FLAGS) $< -o $@
+
 built/%.o: $(KERNEL_HDIR)%.c $(KERNEL_HDIR)%.h
 	$(I686)gcc -I $(KERNEL_HDIR) -I $(GCC_HDIR) $(GCC_FLAGS) $< -o $@
 dump:
