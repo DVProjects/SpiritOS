@@ -1,6 +1,6 @@
 I686:=/usr/local/i686elfgcc/bin/i686-elf-
 MODULES:=built/empty.bin built/boot.module built/kernel.module 
-GCC_FLAGS:=-ffreestanding -m32 -g -c
+CFLAGS:=-ffreestanding -m32 -g -c
 KERNEL_HDIR:=src/include/kernel/
 GCC_HDIR:=src/include/gcc/
 ASM_IDIR:=src/include/asm/
@@ -24,19 +24,23 @@ built/kernel.module: built/kernel_entry.o built/kernel.o $(KERNEL_OBJS) $(GCC_OB
 	$(I686)ld -o $@ -Ttext 0x8000 $^ --oformat binary
 
 built/kernel.o: src/kernel/kernel.c
-	$(I686)gcc -I $(KERNEL_HDIR) -I $(GCC_HDIR) $(GCC_FLAGS) $< -o $@
+	$(I686)gcc -I $(KERNEL_HDIR) -I $(GCC_HDIR) $(CFLAGS) $< -o $@
 
 built/kernel_entry.o: src/kernel/kernel_entry.asm 
 	nasm $< -f elf -o $@
 
 built/%.string.o: $(GCC_HDIR)string/%.c $(GCC_HDIR)string.h
-	$(I686)gcc -I $(GCC_HDIR) $(GCC_FLAGS) $< -o $@
+	$(I686)gcc -I $(GCC_HDIR) $(CFLAGS) $< -o $@
 
 built/%.stdlib.o: $(GCC_HDIR)stdlib/%.c $(GCC_HDIR)stdlib.h
-	$(I686)gcc -I $(GCC_HDIR) -I $(KERNEL_HDIR) $(GCC_FLAGS) $< -o $@
+	$(I686)gcc -I $(GCC_HDIR) -I $(KERNEL_HDIR) $(CFLAGS) $< -o $@
+
+built/%.stdio.o: $(GCC_HDIR)stdio/%.c $(GCC_HDIR)stdio.h
+	$(I686)gcc -I $(GCC_HDIR) -I $(KERNEL_HDIR) $(CFLAGS) $< -o $@
 
 built/%.o: $(KERNEL_HDIR)%.c $(KERNEL_HDIR)%.h
-	$(I686)gcc -I $(KERNEL_HDIR) -I $(GCC_HDIR) $(GCC_FLAGS) $< -o $@
+	$(I686)gcc -I $(KERNEL_HDIR) -I $(GCC_HDIR) $(CFLAGS) $< -o $@
+
 dump:
 	objdump -D -mi386 -b binary "SpiritOS.bin" > "dump.txt"
 
