@@ -11,9 +11,9 @@ struct heap_entry {
 	size_t size;
 };
 
-struct heap_entry heap_tail;
-struct heap_entry heap_table[256];
-int heap_counter;
+extern struct heap_entry heap_tail;
+extern struct heap_entry heap_table[256];
+extern int heap_counter;
 
 void heap_init(void);
 size_t heap_add_entry(size_t);

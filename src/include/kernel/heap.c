@@ -2,6 +2,10 @@
 #include <stdbool.h>
 #include "heap.h"
 
+struct heap_entry heap_tail;
+struct heap_entry heap_table[256];
+int heap_counter;
+
 void heap_init(void){
 	heap_tail.size = UINT32_MAX;
 	heap_tail.offset = 0;

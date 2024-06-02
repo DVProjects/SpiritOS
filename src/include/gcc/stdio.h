@@ -20,7 +20,7 @@ typedef struct _IO_FILE {
 	int8_t _buftype;
 } FILE;
 
-FILE* stdout;
+extern FILE* stdout;
 //TODO: add stdin & stderr
 
 #define putchar(char) fputc(char, stdout)
