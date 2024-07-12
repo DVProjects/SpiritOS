@@ -7,9 +7,9 @@
 
 #define EOF (-1)
 
-#define _IOFBF 1
+#define _IOFBF 2
+#define _IOLBF 1
 #define _IONBF 0
-#define _IOLBF (-1)
 
 typedef struct _IO_FILE {
 	char* _write_ptr;
@@ -36,5 +36,7 @@ int vfprintf(FILE *stream, const char *format, va_list args);
 
 #define fputs(str, stream) fprintf(stream, str)
 #define puts(str) fputs(str, stdio)
+
+int fflush(FILE *stream);
 
 #endif
