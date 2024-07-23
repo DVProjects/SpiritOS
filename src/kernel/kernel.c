@@ -6,6 +6,7 @@
 #include "vga.h"
 #include "tty.h"
 #include "heap.h"
+#include "../io.h"
 
 void kernel(void){
 	int* test;
